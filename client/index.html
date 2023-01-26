@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dali Grup</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./bootstrap.min.css">
+</head>
+<body>
+    <form>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">İp Adresi</label>
+          <input type="text" class="form-control" value="170.100.4." id="ip" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Armatür Sayısı</label>
+          <input type="text" class="form-control" id="led" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Başlangıç Adresi</label>
+          <input type="text" class="form-control" id="start" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Grup No</label>
+          <input type="text" class="form-control" id="group" aria-describedby="emailHelp">
+        </div>
+        <button type="button" id="send" class="btn btn-primary">Gönder</button>
+        <p class = "text-center" id="message"></p>
+    </form>
+</body>
+<script src="./jquery.min.js"></script>
+<script>
+  $("#send").click(function(){
+    $('#send').prop('disabled', true);
+    $("#message").html("İşlem gerçekleştiriliyor lütfen bekleyin.");
+    let ip = $("#ip").val();
+    let led = $("#led").val();
+    let start = $("#start").val();
+    let group = $("#group").val();
+    $.ajax({
+        url:'http://localhost:9999/sendDali',
+        type:'POST',
+        data:{
+            'ip':ip,
+            'led':led,
+            'start':start,
+            'group':group
+        },
+        success:function(data) {
+            console.log(data); 
+            if(data == "success"){
+              $("#message").html("İşlem Tamamlandı");
+              $('#send').prop('disabled', false);
+            }else{
+              $("#message").html("İşlem gerçekleşirken bir sorun oluştu :"+data);
+            }          
+        }
+    });
+  });
+</script>
+</html>
